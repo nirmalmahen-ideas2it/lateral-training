@@ -28,6 +28,7 @@ public class RoleService {
 
     public RoleDTO update(Long id, RoleDTO dto) {
         Role role = roleRepo.findById(id).orElseThrow();
+        mapper.typeMap(RoleDTO.class, Role.class).addMappings(m -> m.skip(Role::setId));
         mapper.map(dto, role);
         return mapper.map(roleRepo.save(role), RoleDTO.class);
     }

@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Version;
+import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@Data
 public abstract class BaseEntity {
     @CreatedDate
     @Column(updatable = false)
@@ -30,6 +32,7 @@ public abstract class BaseEntity {
     private String updatedBy;
 
     @Version
-    private Long rowVersion;
+    @Column(name = "row_version", nullable = false)
+    private long rowVersion;
 }
 
