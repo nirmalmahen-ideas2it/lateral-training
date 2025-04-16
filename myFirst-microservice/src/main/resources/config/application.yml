@@ -14,96 +14,19 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
----
-# Conditionally disable springdoc on missing api-docs profile
 spring:
   config:
-    activate:
-      on-profile: '!api-docs'
-springdoc:
-  api-docs:
-    enabled: true
-  swagger-ui:
-    enabled: true
-    path: /swagger-ui.html
----
-feign:
-  circuitbreaker:
-    enabled: true
-  # client:
-  #   config:
-  #     default:
-  #       connectTimeout: 5000
-  #       readTimeout: 5000
-management:
-  endpoints:
-    web:
-      base-path: /management
-      exposure:
-        include:
-          - configprops
-          - env
-          - health
-          - info
-          - jhimetrics
-          - jhiopenapigroups
-          - logfile
-          - loggers
-          - prometheus
-          - threaddump
-          - liquibase
-  endpoint:
-    health:
-      show-details: when_authorized
-      roles: 'ROLE_ADMIN'
-      probes:
-        enabled: true
-      group:
-        liveness:
-          include: livenessState
-        readiness:
-          include: readinessState,db
-    jhimetrics:
-      enabled: true
-  info:
-    git:
-      mode: full
-    env:
-      enabled: true
-  health:
-    mail:
-      enabled: false # When using the MailService, configure an SMTP server and set this to true
-  prometheus:
-    metrics:
-      export:
-        enabled: true
-        step: 60
-  observations:
-    key-values:
-      application: ${spring.application.name}
-  metrics:
-    enable:
-      http: true
-      jvm: true
-      logback: true
-      process: true
-      system: true
-    distribution:
-      percentiles-histogram:
-        all: true
-      percentiles:
-        all: 0, 0.5, 0.75, 0.95, 0.99, 1.0
-    data:
-      repository:
-        autotime:
-          enabled: true
-    tags:
-      application: ${spring.application.name}
-
-spring:
+    import: optional:configserver:http://localhost:8888
   application:
     name: myFirstMicroService
   cloud:
+    config:
+      enabled: false
+      uri: http://localhost:8888
+      label: main
+      profile: dev
+      name: myfirstmicroservice
+      format: yaml
     consul:
       discovery:
         healthCheckPath: /management/health
@@ -186,6 +109,79 @@ spring:
     ansi:
       console-available: true
 
+feign:
+  circuitbreaker:
+    enabled: true
+  # client:
+  #   config:
+  #     default:
+  #       connectTimeout: 5000
+  #       readTimeout: 5000
+management:
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include:
+          - configprops
+          - env
+          - health
+          - info
+          - jhimetrics
+          - jhiopenapigroups
+          - logfile
+          - loggers
+          - prometheus
+          - threaddump
+          - liquibase
+  endpoint:
+    health:
+      show-details: when_authorized
+      roles: 'ROLE_ADMIN'
+      probes:
+        enabled: true
+      group:
+        liveness:
+          include: livenessState
+        readiness:
+          include: readinessState,db
+    jhimetrics:
+      enabled: true
+  info:
+    git:
+      mode: full
+    env:
+      enabled: true
+  health:
+    mail:
+      enabled: false # When using the MailService, configure an SMTP server and set this to true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+        step: 60
+  observations:
+    key-values:
+      application: ${spring.application.name}
+  metrics:
+    enable:
+      http: true
+      jvm: true
+      logback: true
+      process: true
+      system: true
+    distribution:
+      percentiles-histogram:
+        all: true
+      percentiles:
+        all: 0, 0.5, 0.75, 0.95, 0.99, 1.0
+    data:
+      repository:
+        autotime:
+          enabled: true
+    tags:
+      application: ${spring.application.name}
+
 server:
   servlet:
     session:
@@ -245,3 +241,16 @@ jhipster:
 # ===================================================================
 
 # application:
+---
+# Conditionally disable springdoc on missing api-docs profile
+spring:
+  config:
+    activate:
+      on-profile: '!api-docs'
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+---

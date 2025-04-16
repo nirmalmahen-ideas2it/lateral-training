@@ -54,14 +54,14 @@ spring:
           - git-branch=${git.branch:}
       host: localhost
       port: 8500
-  datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/myFirstMicroService
-    username: myFirstMicroService
-    password:
-    hikari:
-      poolName: Hikari
-      auto-commit: false
+#  datasource:
+#    type: com.zaxxer.hikari.HikariDataSource
+#    url: jdbc:postgresql://localhost:5432/myFirstMicroService
+#    username: myFirstMicroService
+#    password:
+#    hikari:
+#      poolName: Hikari
+#      auto-commit: false
   jpa:
     hibernate:
       ddl-auto: update

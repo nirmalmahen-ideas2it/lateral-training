@@ -4,14 +4,18 @@
 # ===================================================================
 
 spring:
+  config:
+    import: optional:configserver:http://localhost:8888
   application:
     name: myFirstMicroService
-  profiles:
-    # The commented value for `active` can be replaced with valid Spring profiles to load.
-    # Otherwise, it will be filled in by maven when building the JAR file
-    # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
-    active: '@spring.profiles.active@'
   cloud:
+    config:
+      enabled: false
+      uri: http://localhost:8888
+      label: main
+      profile: dev
+      name: myfirstmicroservice
+      format: yaml
     consul:
       config:
         fail-fast: false # if not in "prod" profile, do not force to use Spring Cloud Config
@@ -28,6 +32,11 @@ spring:
 
       host: localhost
       port: 8500
+  profiles:
+    # The commented value for `active` can be replaced with valid Spring profiles to load.
+    # Otherwise, it will be filled in by maven when building the JAR file
+    # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+    active: '@spring.profiles.active@'
   docker:
     compose:
       enabled: true
