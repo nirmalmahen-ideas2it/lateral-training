@@ -7,7 +7,17 @@ services:
     #   - ~/volumes/jhipster/myFirstMicroService/postgresql/:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=myFirstMicroService
-      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_PASSWORD=test_password
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data  # Change to bind mount data directory
+      - ./custom_pg_hba.conf:/etc/postgresql/pg_hba.conf
+    command: >
+      bash -c "
+        if [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
+          echo 'Initializing database directory...';
+        fi
+        cp /etc/postgresql/pg_hba.conf /var/lib/postgresql/data/pg_hba.conf;
+        exec docker-entrypoint.sh postgres"
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER}']
       interval: 5s
